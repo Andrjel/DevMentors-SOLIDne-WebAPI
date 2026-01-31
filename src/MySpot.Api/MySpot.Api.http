@@ -1,0 +1,40 @@
+@reservationId = 1
+###
+
+GET {{MySpot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{MySpot_HostAddress}}/reservations
+Accept: application/json
+
+###
+
+GET {{MySpot_HostAddress}}/reservations/{{reservationId}}
+Accept: application/json
+
+###
+
+POST {{MySpot_HostAddress}}/reservations
+Content-Type: application/json
+
+{
+    "employeeName": "John Doe",
+    "parkingSpotName": "P4",
+    "licensePlate": "XYZ123",
+    "date": "2000-02-20"
+}
+
+###
+
+PUT {{MySpot_HostAddress}}/reservations/{{reservationId}}
+Content-Type: application/json
+
+{
+  "licensePlate": "Neeeew"
+}
+
+###
+
+DELETE {{MySpot_HostAddress}}/reservations/{{reservationId}}

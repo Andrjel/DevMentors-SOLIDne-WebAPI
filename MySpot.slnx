@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MySpot.Api/MySpot.Api.csproj" />
+  </Folder>
+</Solution>
