@@ -1,9 +1,5 @@
-@reservationId = 1
-###
-
-GET {{MySpot_HostAddress}}/weatherforecast/
-Accept: application/json
-
+@reservationId = fec66131-aadf-4d12-b0ae-53534911504e
+@parkingSpotId = 00000000-0000-0000-0000-000000000001
 ###
 
 GET {{MySpot_HostAddress}}/reservations
@@ -21,9 +17,9 @@ Content-Type: application/json
 
 {
     "employeeName": "John Doe",
-    "parkingSpotName": "P4",
+    "parkingSpotId": "{{parkingSpotId}}",
     "licensePlate": "XYZ123",
-    "date": "2000-02-20"
+    "date": "2026-02-03"
 }
 
 ###

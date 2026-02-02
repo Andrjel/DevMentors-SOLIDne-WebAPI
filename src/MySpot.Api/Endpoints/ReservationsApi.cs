@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MySpot.Api.Models;
+using MySpot.Api.Commands;
+using MySpot.Api.DTO;
+using MySpot.Api.Entities;
 using MySpot.Api.Services;
 
 namespace MySpot.Api.Endpoints;
@@ -11,19 +13,19 @@ public static class ReservationsApi
     {
         var group = app.MapGroup("reservations");
         group.MapGet("", GetReservations).WithName("GetReservations");
-        group.MapGet("/{id:int}", GetReservation).WithName("GetReservation");
+        group.MapGet("/{id:guid}", GetReservation).WithName("GetReservation");
         group.MapPost("", PostReservations).WithName("PostReservations");
-        group.MapPut("/{id:int}", PutReservations).WithName("PutReservations");
-        group.MapDelete("/{id:int}", DeleteReservations).WithName("DeleteReservations");
+        group.MapPut("/{id:guid}", PutReservations).WithName("PutReservations");
+        group.MapDelete("/{id:guid}", DeleteReservations).WithName("DeleteReservations");
         return app;
     }
 
-    private static Results<Ok<IEnumerable<Reservation>>, BadRequest> GetReservations(
+    private static Results<Ok<IEnumerable<ReservationDto>>, BadRequest> GetReservations(
         [FromServices] ReservationsService reservationsService
-    ) => TypedResults.Ok(reservationsService.GetAll());
+    ) => TypedResults.Ok(reservationsService.GetAllWeekly());
 
-    private static Results<Ok<Reservation>, NotFound> GetReservation(
-        [FromRoute] int id,
+    private static Results<Ok<ReservationDto>, NotFound> GetReservation(
+        [FromRoute] Guid id,
         [FromServices] ReservationsService reservationsService
     )
     {
@@ -34,34 +36,33 @@ public static class ReservationsApi
     }
 
     private static Results<CreatedAtRoute<Reservation?>, BadRequest> PostReservations(
-        [FromBody] Reservation reservation,
+        [FromBody] CreateReservation command,
         [FromServices] ReservationsService reservationsService
     )
     {
-        var id = reservationsService.Create(reservation);
+        var id = reservationsService.Create(command with { ReservationId = Guid.NewGuid() });
         if (id is null)
             return TypedResults.BadRequest();
         return TypedResults.CreatedAtRoute<Reservation?>(null, "GetReservations", new { id });
     }
 
     private static Results<NoContent, NotFound> PutReservations(
-        [FromRoute] int id,
-        [FromBody] Reservation reservation,
+        [FromRoute] Guid id,
+        [FromBody] ChangeReservationLicensePlate command,
         [FromServices] ReservationsService reservationsService
     )
     {
-        reservation.Id = id;
-        if (reservationsService.Update(reservation))
+        if (reservationsService.Update(command with { ReservationId = id }))
             return TypedResults.NoContent();
         return TypedResults.NotFound();
     }
 
     private static Results<NoContent, NotFound> DeleteReservations(
-        [FromRoute] int id,
+        [FromRoute] Guid id,
         [FromServices] ReservationsService reservationsService
     )
     {
-        if (reservationsService.Delete(id))
+        if (reservationsService.Delete(new DeleteReservation(id)))
             return TypedResults.NoContent();
         return TypedResults.NotFound();
     }
