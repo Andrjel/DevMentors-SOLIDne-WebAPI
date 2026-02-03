@@ -6,36 +6,37 @@ namespace MySpot.Api.Services;
 
 public class ReservationsService
 {
+    private static IClock _clock = new Clock();
     private static readonly List<WeeklyParkingSpot> WeeklyParkingSpots =
     [
         new(
             Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(7),
+            _clock.Current.DateTime,
+            _clock.Current.DateTime.AddDays(7),
             "P1"
         ),
         new(
             Guid.Parse("00000000-0000-0000-0000-000000000002"),
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(7),
+            _clock.Current.DateTime,
+            _clock.Current.DateTime.AddDays(7),
             "P2"
         ),
         new(
             Guid.Parse("00000000-0000-0000-0000-000000000003"),
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(7),
+            _clock.Current.DateTime,
+            _clock.Current.DateTime.AddDays(7),
             "P3"
         ),
         new(
             Guid.Parse("00000000-0000-0000-0000-000000000004"),
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(7),
+            _clock.Current.DateTime,
+            _clock.Current.DateTime.AddDays(7),
             "P4"
         ),
         new(
             Guid.Parse("00000000-0000-0000-0000-000000000005"),
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(7),
+            _clock.Current.DateTime,
+            _clock.Current.DateTime.AddDays(7),
             "P5"
         ),
     ];
@@ -68,7 +69,7 @@ public class ReservationsService
             employeeName: command.EmployeeName,
             date: command.Date
         );
-        weeklyParkingSpot.AddReservation(newReservation);
+        weeklyParkingSpot.AddReservation(newReservation, _clock.Current.DateTime);
 
         return command.ReservationId;
     }
@@ -85,7 +86,7 @@ public class ReservationsService
         if (existingReservation is null)
             return false;
 
-        if (existingReservation.Date <= DateTime.UtcNow)
+        if (existingReservation.Date <= _clock.Current.DateTime)
             return false;
 
         existingReservation.ChangeLicensePlate(command.LicensePlate);
