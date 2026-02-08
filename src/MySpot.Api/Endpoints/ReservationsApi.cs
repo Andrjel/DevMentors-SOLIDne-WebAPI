@@ -21,12 +21,12 @@ public static class ReservationsApi
     }
 
     private static Results<Ok<IEnumerable<ReservationDto>>, BadRequest> GetReservations(
-        [FromServices] ReservationsService reservationsService
+        [FromServices] IReservationsService reservationsService
     ) => TypedResults.Ok(reservationsService.GetAllWeekly());
 
     private static Results<Ok<ReservationDto>, NotFound> GetReservation(
         [FromRoute] Guid id,
-        [FromServices] ReservationsService reservationsService
+        [FromServices] IReservationsService reservationsService
     )
     {
         var reservation = reservationsService.Get(id);
@@ -37,7 +37,7 @@ public static class ReservationsApi
 
     private static Results<CreatedAtRoute<Reservation?>, BadRequest> PostReservations(
         [FromBody] CreateReservation command,
-        [FromServices] ReservationsService reservationsService
+        [FromServices] IReservationsService reservationsService
     )
     {
         var id = reservationsService.Create(command with { ReservationId = Guid.NewGuid() });
@@ -49,7 +49,7 @@ public static class ReservationsApi
     private static Results<NoContent, NotFound> PutReservations(
         [FromRoute] Guid id,
         [FromBody] ChangeReservationLicensePlate command,
-        [FromServices] ReservationsService reservationsService
+        [FromServices] IReservationsService reservationsService
     )
     {
         if (reservationsService.Update(command with { ReservationId = id }))
@@ -59,7 +59,7 @@ public static class ReservationsApi
 
     private static Results<NoContent, NotFound> DeleteReservations(
         [FromRoute] Guid id,
-        [FromServices] ReservationsService reservationsService
+        [FromServices] IReservationsService reservationsService
     )
     {
         if (reservationsService.Delete(new DeleteReservation(id)))

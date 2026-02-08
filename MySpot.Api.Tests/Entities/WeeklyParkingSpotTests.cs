@@ -1,10 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using MySpot.Api.Entities;
+﻿using MySpot.Api.Entities;
 using MySpot.Api.Exceptions;
 using MySpot.Api.ValueObjects;
 using Shouldly;
 
-namespace MySpot.Api.Tests;
+namespace MySpot.Api.Tests.Entities;
 
 public class WeeklyParkingSpotTests
 {
