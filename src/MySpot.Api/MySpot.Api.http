@@ -34,3 +34,7 @@ Content-Type: application/json
 ###
 
 DELETE {{MySpot_HostAddress}}/reservations/{{reservationId}}
+
+###
+
+GET {{MySpot_HostAddress}}

@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddOpenApi();
 builder.Services.AddCore();
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,5 +26,6 @@ var app = builder.Build();
 // app.UseHttpsRedirection();
 app.MapWeatherForecastApi();
 app.MapReservationsV1();
+app.MapHomeV1();
 
 app.Run();
