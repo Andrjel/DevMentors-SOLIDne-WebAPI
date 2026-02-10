@@ -1,4 +1,4 @@
-@reservationId = fec66131-aadf-4d12-b0ae-53534911504e
+@reservationId = 8fda95ac-d18f-40b5-a025-59bff7ee9df9
 @parkingSpotId = 00000000-0000-0000-0000-000000000001
 ###
 
@@ -19,7 +19,7 @@ Content-Type: application/json
     "employeeName": "John Doe",
     "parkingSpotId": "{{parkingSpotId}}",
     "licensePlate": "XYZ123",
-    "date": "2026-02-08"
+    "date": "2026-02-11"
 }
 
 ###

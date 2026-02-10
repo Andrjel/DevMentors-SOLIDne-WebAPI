@@ -1,8 +1,14 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/MySpot.Api/MySpot.Api.csproj" />
+    <Project Path="src/MySpot.App/MySpot.App.csproj" />
+    <Project Path="src/MySpot.Core/MySpot.Core.csproj" />
+    <Project Path="src/MySpot.Infrastructure/MySpot.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="MySpot.Api.Tests/MySpot.Api.Tests.csproj" />
+    <Project Path="tests/MySpot.Tests/MySpot.Tests.csproj" />
   </Folder>
 </Solution>

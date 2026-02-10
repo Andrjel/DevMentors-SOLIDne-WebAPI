@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MySpot.Api.Commands;
-using MySpot.Api.DTO;
-using MySpot.Api.Entities;
-using MySpot.Api.Services;
+using MySpot.App.Commands;
+using MySpot.App.DTO;
+using MySpot.App.Services;
+using MySpot.Core.Entities;
 
 namespace MySpot.Api.Endpoints;
 
