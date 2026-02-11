@@ -20,49 +20,54 @@ public static class ReservationsApi
         return app;
     }
 
-    private static Results<Ok<IEnumerable<ReservationDto>>, BadRequest> GetReservations(
+    private static async Task<Ok<IEnumerable<ReservationDto>>> GetReservations(
         [FromServices] IReservationsService reservationsService
-    ) => TypedResults.Ok(reservationsService.GetAllWeekly());
+    ) => TypedResults.Ok(await reservationsService.GetAllWeeklyAsync());
 
-    private static Results<Ok<ReservationDto>, NotFound> GetReservation(
+    private static async Task<Results<Ok<ReservationDto>, NotFound>> GetReservation(
         [FromRoute] Guid id,
         [FromServices] IReservationsService reservationsService
     )
     {
-        var reservation = reservationsService.Get(id);
+        var reservation = await reservationsService.GetAsync(id);
         if (reservation is null)
             return TypedResults.NotFound();
         return TypedResults.Ok(reservation);
     }
 
-    private static Results<CreatedAtRoute<Reservation?>, BadRequest> PostReservations(
+    private static async Task<Results<CreatedAtRoute<Reservation?>, BadRequest>> PostReservations(
         [FromBody] CreateReservation command,
         [FromServices] IReservationsService reservationsService
     )
     {
-        var id = reservationsService.Create(command with { ReservationId = Guid.NewGuid() });
+        var id = await reservationsService.CreateAsync(
+            command with
+            {
+                ReservationId = Guid.NewGuid(),
+            }
+        );
         if (id is null)
             return TypedResults.BadRequest();
         return TypedResults.CreatedAtRoute<Reservation?>(null, "GetReservations", new { id });
     }
 
-    private static Results<NoContent, NotFound> PutReservations(
+    private static async Task<Results<NoContent, NotFound>> PutReservations(
         [FromRoute] Guid id,
         [FromBody] ChangeReservationLicensePlate command,
         [FromServices] IReservationsService reservationsService
     )
     {
-        if (reservationsService.Update(command with { ReservationId = id }))
+        if (await reservationsService.UpdateAsync(command with { ReservationId = id }))
             return TypedResults.NoContent();
         return TypedResults.NotFound();
     }
 
-    private static Results<NoContent, NotFound> DeleteReservations(
+    private static async Task<Results<NoContent, NotFound>> DeleteReservations(
         [FromRoute] Guid id,
         [FromServices] IReservationsService reservationsService
     )
     {
-        if (reservationsService.Delete(new DeleteReservation(id)))
+        if (await reservationsService.DeleteAsync(new DeleteReservation(id)))
             return TypedResults.NoContent();
         return TypedResults.NotFound();
     }

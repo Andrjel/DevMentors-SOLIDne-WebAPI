@@ -20,11 +20,17 @@ internal sealed class ReservationsService : IReservationsService
         _clock = clock;
     }
 
-    public ReservationDto Get(Guid id) => GetAllWeekly()?.SingleOrDefault(x => x.Id == id);
+    public async Task<ReservationDto?> GetAsync(Guid id)
+    {
+        var reservations = await GetAllWeeklyAsync();
+        return reservations.SingleOrDefault(r => r.Id == id);
+    }
 
-    public IEnumerable<ReservationDto?> GetAllWeekly() =>
-        _weeklyParkingSpotRepository
-            .GetAll()
+    public async Task<IEnumerable<ReservationDto?>> GetAllWeeklyAsync()
+    {
+        var weeklyParkingSpots = await _weeklyParkingSpotRepository.GetAllAsync();
+
+        return weeklyParkingSpots
             .SelectMany(x => x.Reservations)
             .Select(r => new ReservationDto()
             {
@@ -33,11 +39,12 @@ internal sealed class ReservationsService : IReservationsService
                 ParkingSpotId = r.ParkingSpotId,
                 Date = r.Date.Value.Date,
             });
+    }
 
-    public Guid? Create(CreateReservation command)
+    public async Task<Guid?> CreateAsync(CreateReservation command)
     {
         var parkingSpotId = new ParkingSpotId(command.ParkingSpotId);
-        var weeklyParkingSpot = _weeklyParkingSpotRepository.Get(parkingSpotId);
+        var weeklyParkingSpot = await _weeklyParkingSpotRepository.GetAsync(parkingSpotId);
         if (weeklyParkingSpot is null)
             return default;
 
@@ -49,14 +56,14 @@ internal sealed class ReservationsService : IReservationsService
             date: new Date(command.Date)
         );
         weeklyParkingSpot.AddReservation(newReservation, _clock.Current);
-        _weeklyParkingSpotRepository.Update(weeklyParkingSpot);
+        await _weeklyParkingSpotRepository.UpdateAsync(weeklyParkingSpot);
 
         return command.ReservationId;
     }
 
-    public bool Update(ChangeReservationLicensePlate command)
+    public async Task<bool> UpdateAsync(ChangeReservationLicensePlate command)
     {
-        var weeklyParkingSpot = GetWeeklyParkingSpotByReservation(command.ReservationId);
+        var weeklyParkingSpot = await GetWeeklyParkingSpotByReservationAsync(command.ReservationId);
         if (weeklyParkingSpot is null)
             return false;
 
@@ -71,13 +78,13 @@ internal sealed class ReservationsService : IReservationsService
             return false;
 
         existingReservation.ChangeLicensePlate(command.LicensePlate);
-        _weeklyParkingSpotRepository.Update(weeklyParkingSpot);
+        await _weeklyParkingSpotRepository.UpdateAsync(weeklyParkingSpot);
         return true;
     }
 
-    public bool Delete(DeleteReservation command)
+    public async Task<bool> DeleteAsync(DeleteReservation command)
     {
-        var weeklyParkingSpot = GetWeeklyParkingSpotByReservation(command.ReservationId);
+        var weeklyParkingSpot = await GetWeeklyParkingSpotByReservationAsync(command.ReservationId);
         if (weeklyParkingSpot is null)
             return false;
 
@@ -89,12 +96,18 @@ internal sealed class ReservationsService : IReservationsService
             return false;
 
         weeklyParkingSpot.RemoveReservation(command.ReservationId);
-        _weeklyParkingSpotRepository.Update(weeklyParkingSpot);
+        await _weeklyParkingSpotRepository.UpdateAsync(weeklyParkingSpot);
         return true;
     }
 
-    private WeeklyParkingSpot? GetWeeklyParkingSpotByReservation(ReservationId reservationId) =>
-        _weeklyParkingSpotRepository
-            .GetAll()
-            .SingleOrDefault(x => x.Reservations.Any(r => r.Id == reservationId));
+    private async Task<WeeklyParkingSpot?> GetWeeklyParkingSpotByReservationAsync(
+        ReservationId reservationId
+    )
+    {
+        var weeklyParkingSpots = await _weeklyParkingSpotRepository.GetAllAsync();
+
+        return weeklyParkingSpots.SingleOrDefault(x =>
+            x.Reservations.Any(r => r.Id == reservationId)
+        );
+    }
 }
