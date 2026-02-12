@@ -1,11 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using MySpot.Api.Endpoints;
 using MySpot.App;
-using MySpot.App.Services;
 using MySpot.Core;
-using MySpot.Core.ValueObjects;
 using MySpot.Infrastructure;
-using MySpot.Infrastructure.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +13,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseInfrastructure();
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
