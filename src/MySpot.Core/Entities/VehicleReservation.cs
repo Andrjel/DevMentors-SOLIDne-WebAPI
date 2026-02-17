@@ -12,9 +12,10 @@ public sealed class VehicleReservation : Reservation
         ParkingSpotId parkingSpotId,
         EmployeeName employeeName,
         LicensePlate licensePlate,
-        Date date
+        Date date,
+        Capacity capacity
     )
-        : base(id, parkingSpotId, date)
+        : base(id, parkingSpotId, date, capacity)
     {
         EmployeeName = employeeName;
         LicensePlate = licensePlate;

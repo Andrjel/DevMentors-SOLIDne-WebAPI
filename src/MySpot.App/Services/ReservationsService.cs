@@ -60,7 +60,8 @@ internal sealed class ReservationsService : IReservationsService
             parkingSpotId: command.ParkingSpotId,
             licensePlate: command.LicensePlate,
             employeeName: command.EmployeeName,
-            date: new Date(command.Date)
+            date: new Date(command.Date),
+            capacity: command.capacity
         );
 
         _parkingReservationService.ReserveSpotForVehicle(

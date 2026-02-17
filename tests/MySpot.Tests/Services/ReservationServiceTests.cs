@@ -49,7 +49,8 @@ public class ReservationServiceTests
             ParkingSpotId: parkingSpot.Id,
             EmployeeName: "John Doe",
             LicensePlate: "XYZ123",
-            Date: _clock.Current.DateTime.AddDays(1)
+            Date: _clock.Current.DateTime.AddDays(1),
+            1
         );
 
         // ACT

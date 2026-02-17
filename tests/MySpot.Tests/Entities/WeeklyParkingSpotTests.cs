@@ -15,7 +15,7 @@ public class WeeklyParkingSpotTests
     public WeeklyParkingSpotTests()
     {
         _now = new DateTime(2025, 2, 3);
-        _weeklyParkingSpot = new WeeklyParkingSpot(Guid.NewGuid(), new Week(_now), "P1");
+        _weeklyParkingSpot = WeeklyParkingSpot.Create(Guid.NewGuid(), new Week(_now), "P1");
     }
 
     #endregion
@@ -32,7 +32,8 @@ public class WeeklyParkingSpotTests
             _weeklyParkingSpot.Id,
             "John Doe",
             "XYZ123",
-            new Date(invalidDate)
+            new Date(invalidDate),
+            1
         );
 
         // ACT
@@ -46,7 +47,7 @@ public class WeeklyParkingSpotTests
     }
 
     [Fact]
-    public void given_reservation_for_already_existing_date_add_reservation_should_fail()
+    public void given_reservation_for_already_reserved_parking_spot_add_reservation_should_fail()
     {
         // ARRANGE
         var reservationDate = _now.AddDays(1);
@@ -55,7 +56,8 @@ public class WeeklyParkingSpotTests
             _weeklyParkingSpot.Id,
             "John Doe",
             "XYZ123",
-            reservationDate
+            reservationDate,
+            2
         );
         _weeklyParkingSpot.AddReservation(reservation, _now);
         var nextReservation = new VehicleReservation(
@@ -63,7 +65,8 @@ public class WeeklyParkingSpotTests
             _weeklyParkingSpot.Id,
             "John Doe",
             "XYZ123",
-            reservationDate
+            reservationDate,
+            1
         );
 
         // ACT
@@ -73,11 +76,11 @@ public class WeeklyParkingSpotTests
 
         // ASSERT
         exception.ShouldNotBeNull();
-        exception.ShouldBeOfType<ParkingSpotAlreadyReservedException>();
+        exception.ShouldBeOfType<ParkingSpotCapacityExceededException>();
     }
 
     [Fact]
-    public void given_reservation_for_not_taken_date_add_reservation_should_succeed()
+    public void given_reservation_for_not_reserved_parking_spot_add_reservation_should_succeed()
     {
         // ARRANGE
         var reservationDate = _now.AddDays(1);
@@ -86,7 +89,8 @@ public class WeeklyParkingSpotTests
             _weeklyParkingSpot.Id,
             "John Doe",
             "XYZ123",
-            reservationDate
+            reservationDate,
+            1
         );
 
         // ACT

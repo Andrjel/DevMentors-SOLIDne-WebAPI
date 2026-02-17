@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySpot.App.Services;
 using MySpot.Core.Abstractions;
+using MySpot.Core.Entities;
 using MySpot.Core.ValueObjects;
 
 namespace MySpot.Infrastructure.DAL;
@@ -32,27 +33,27 @@ internal sealed class DatabaseInitializer : IHostedService
             {
                 weeklyParkingSpots =
                 [
-                    new(
+                    WeeklyParkingSpot.Create(
                         Guid.Parse("00000000-0000-0000-0000-000000000001"),
                         new Week(_clock.Current),
                         "P1"
                     ),
-                    new(
+                    WeeklyParkingSpot.Create(
                         Guid.Parse("00000000-0000-0000-0000-000000000002"),
                         new Week(_clock.Current),
                         "P2"
                     ),
-                    new(
+                    WeeklyParkingSpot.Create(
                         Guid.Parse("00000000-0000-0000-0000-000000000003"),
                         new Week(_clock.Current),
                         "P3"
                     ),
-                    new(
+                    WeeklyParkingSpot.Create(
                         Guid.Parse("00000000-0000-0000-0000-000000000004"),
                         new Week(_clock.Current),
                         "P4"
                     ),
-                    new(
+                    WeeklyParkingSpot.Create(
                         Guid.Parse("00000000-0000-0000-0000-000000000005"),
                         new Week(_clock.Current),
                         "P5"
