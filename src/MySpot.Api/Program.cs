@@ -23,7 +23,7 @@ app.UseInfrastructure();
 // }
 // app.UseHttpsRedirection();
 app.MapWeatherForecastApi();
-app.MapReservationsV1();
+app.MapParkingSpotsV1();
 app.MapHomeV1();
 
 app.Run();

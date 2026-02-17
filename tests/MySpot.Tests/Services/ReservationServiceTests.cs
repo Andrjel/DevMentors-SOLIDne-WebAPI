@@ -1,5 +1,5 @@
-﻿using MySpot.App.Commands;
-using MySpot.App.Services;
+﻿using MySpot.App.Abstractions.Commands;
+using MySpot.App.Commands;
 using MySpot.Core.Abstractions;
 using MySpot.Core.Policies;
 using MySpot.Core.Repositories;
@@ -14,7 +14,7 @@ public class ReservationServiceTests
 {
     #region Arrange
 
-    private readonly IReservationsService _reservationsService;
+    private readonly ICommandHandler<ReserveParkingSpotForVehicle> _reserveParkingSpotForVehicleHandler;
     private readonly IWeeklyParkingSpotRepository _weeklyParkingSpotsRepository;
     private readonly IClock _clock;
 
@@ -30,9 +30,9 @@ public class ReservationServiceTests
             ],
             _clock
         );
-        _reservationsService = new ReservationsService(
-            _weeklyParkingSpotsRepository,
+        _reserveParkingSpotForVehicleHandler = new ReserveParkingSpotForVehicleHandler(
             _clock,
+            _weeklyParkingSpotsRepository,
             parkingReservationService
         );
     }
@@ -54,10 +54,11 @@ public class ReservationServiceTests
         );
 
         // ACT
-        var reservationId = await _reservationsService.ReserveForVehicleAsync(command);
+        var exception = await Record.ExceptionAsync(async () =>
+            await _reserveParkingSpotForVehicleHandler.HandleAsync(command)
+        );
 
         // ASSERT
-        reservationId.ShouldNotBeNull();
-        reservationId.Value.ShouldBe(command.ReservationId);
+        exception.ShouldBeNull();
     }
 }

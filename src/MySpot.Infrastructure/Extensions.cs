@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySpot.App.Services;
+using MySpot.App.Abstractions.Queries;
 using MySpot.Core.Abstractions;
 using MySpot.Infrastructure.DAL;
 using MySpot.Infrastructure.Exceptions;
@@ -22,6 +21,13 @@ public static class Extensions
         services.AddPostgres(configuration);
         services.AddSingleton<IClock, Clock>();
         services.AddSingleton<ExceptionMiddleware>();
+        var infrastructureAssembly = typeof(AppOptions).Assembly;
+        services.Scan(s =>
+            s.FromAssemblies(infrastructureAssembly)
+                .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)), publicOnly: false)
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+        );
         return services;
     }
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MySpot.App.Services;
 using MySpot.Core.Abstractions;
 using MySpot.Core.Entities;
 using MySpot.Core.ValueObjects;

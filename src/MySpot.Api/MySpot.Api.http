@@ -1,18 +1,13 @@
-@reservationId = 695f52bd-34e4-46ab-83c3-ed8832662aff
-@parkingSpotId = 00000000-0000-0000-0000-000000000001
+@reservationId = cffd5bf6-10d4-4d71-8bf7-06705821f873
+@parkingSpotId = 00000000-0000-0000-0000-000000000003
 ###
 
-GET {{MySpot_HostAddress}}/reservations
+GET {{MySpot_HostAddress}}
 Accept: application/json
 
 ###
 
-GET {{MySpot_HostAddress}}/reservations/{{reservationId}}
-Accept: application/json
-
-###
-
-POST {{MySpot_HostAddress}}/reservations/vehicle
+POST {{MySpot_HostAddress}}/{{parkingSpotId}}/reservations/vehicle
 Content-Type: application/json
 
 {

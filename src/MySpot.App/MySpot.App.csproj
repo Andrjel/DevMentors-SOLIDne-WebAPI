@@ -12,4 +12,8 @@
   <ItemGroup>
     <InternalsVisibleTo Include="MySpot.Tests" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
 </Project>
