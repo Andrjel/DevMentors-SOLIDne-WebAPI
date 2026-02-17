@@ -1,4 +1,4 @@
-@reservationId = 8fda95ac-d18f-40b5-a025-59bff7ee9df9
+@reservationId = 695f52bd-34e4-46ab-83c3-ed8832662aff
 @parkingSpotId = 00000000-0000-0000-0000-000000000001
 ###
 
@@ -12,14 +12,24 @@ Accept: application/json
 
 ###
 
-POST {{MySpot_HostAddress}}/reservations
+POST {{MySpot_HostAddress}}/reservations/vehicle
 Content-Type: application/json
 
 {
     "employeeName": "John Doe",
     "parkingSpotId": "{{parkingSpotId}}",
     "licensePlate": "XYZ123",
-    "date": "2026-02-12"
+    "date": "2026-02-18"
+}
+
+###
+
+POST {{MySpot_HostAddress}}/reservations/cleaning
+Content-Type: application/json
+
+{
+    "parkingSpotId": "{{parkingSpotId}}",
+    "date": "2026-02-18"
 }
 
 ###

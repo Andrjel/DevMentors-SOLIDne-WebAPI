@@ -14,7 +14,10 @@ public static class ReservationsApi
         var group = app.MapGroup("reservations");
         group.MapGet("", GetReservations).WithName("GetReservations");
         group.MapGet("/{id:guid}", GetReservation).WithName("GetReservation");
-        group.MapPost("", PostReservations).WithName("PostReservations");
+        group.MapPost("/vehicle", PostReservationForVehicle).WithName("PostReservationForVehicle");
+        group
+            .MapPost("/cleaning", PostReservationForCleaning)
+            .WithName("PostReservationForCleaning");
         group.MapPut("/{id:guid}", PutReservations).WithName("PutReservations");
         group.MapDelete("/{id:guid}", DeleteReservations).WithName("DeleteReservations");
         return app;
@@ -35,12 +38,14 @@ public static class ReservationsApi
         return TypedResults.Ok(reservation);
     }
 
-    private static async Task<Results<CreatedAtRoute<Reservation?>, BadRequest>> PostReservations(
-        [FromBody] CreateReservation command,
+    private static async Task<
+        Results<CreatedAtRoute<Reservation?>, BadRequest>
+    > PostReservationForVehicle(
+        [FromBody] ReserveParkingSpotForVehicle command,
         [FromServices] IReservationsService reservationsService
     )
     {
-        var id = await reservationsService.CreateAsync(
+        var id = await reservationsService.ReserveForVehicleAsync(
             command with
             {
                 ReservationId = Guid.NewGuid(),
@@ -51,13 +56,29 @@ public static class ReservationsApi
         return TypedResults.CreatedAtRoute<Reservation?>(null, "GetReservations", new { id });
     }
 
+    private static async Task<Results<Ok, BadRequest>> PostReservationForCleaning(
+        [FromBody] ReserveParkingSpotForCleaning command,
+        [FromServices] IReservationsService reservationsService
+    )
+    {
+        await reservationsService.ReserveForCleaningAsync(command);
+        return TypedResults.Ok();
+    }
+
     private static async Task<Results<NoContent, NotFound>> PutReservations(
         [FromRoute] Guid id,
         [FromBody] ChangeReservationLicensePlate command,
         [FromServices] IReservationsService reservationsService
     )
     {
-        if (await reservationsService.UpdateAsync(command with { ReservationId = id }))
+        if (
+            await reservationsService.ChangeReservationmLicensePlateAsync(
+                command with
+                {
+                    ReservationId = id,
+                }
+            )
+        )
             return TypedResults.NoContent();
         return TypedResults.NotFound();
     }

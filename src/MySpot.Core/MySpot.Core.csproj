@@ -11,4 +11,8 @@
       Version="10.0.2"
     />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MySpot.Tests" />
+  </ItemGroup>
 </Project>

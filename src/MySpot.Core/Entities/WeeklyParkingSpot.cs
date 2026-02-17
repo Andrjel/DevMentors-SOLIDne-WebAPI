@@ -19,7 +19,7 @@ public class WeeklyParkingSpot
         Name = name;
     }
 
-    public void AddReservation(Reservation reservation, Date now)
+    internal void AddReservation(Reservation reservation, Date now)
     {
         var isInvalidDate =
             reservation.Date < Week.From || reservation.Date > Week.To || reservation.Date < now;
@@ -36,5 +36,10 @@ public class WeeklyParkingSpot
     public void RemoveReservation(ReservationId reservationId)
     {
         _reservations.RemoveWhere(x => x.Id == reservationId);
+    }
+
+    public void RemoveReservations(IEnumerable<Reservation> reservations)
+    {
+        _reservations.RemoveWhere(x => reservations.Any(r => r.Id == x.Id));
     }
 }

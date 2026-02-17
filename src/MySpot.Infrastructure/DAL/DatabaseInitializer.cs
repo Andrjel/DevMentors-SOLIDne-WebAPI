@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySpot.App.Services;
+using MySpot.Core.Abstractions;
 using MySpot.Core.ValueObjects;
 
 namespace MySpot.Infrastructure.DAL;

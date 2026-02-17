@@ -1,4 +1,5 @@
 ﻿using MySpot.App.Services;
+using MySpot.Core.Abstractions;
 using MySpot.Core.Entities;
 using MySpot.Core.Repositories;
 using MySpot.Core.ValueObjects;
@@ -26,6 +27,9 @@ internal sealed class InMemoryWeeklyParkingSpotRepository : IWeeklyParkingSpotRe
 
     public Task<IEnumerable<WeeklyParkingSpot>> GetAllAsync() =>
         Task.FromResult(_weeklyParkingSpots.AsEnumerable());
+
+    public Task<IEnumerable<WeeklyParkingSpot>> GetByWeekAsync(Week week) =>
+        Task.FromResult(_weeklyParkingSpots.Where(x => x.Week == week).AsEnumerable());
 
     public Task AddAsync(WeeklyParkingSpot weeklyParkingSpot)
     {
