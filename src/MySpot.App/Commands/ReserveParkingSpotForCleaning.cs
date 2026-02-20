@@ -18,9 +18,7 @@ internal sealed class ReserveParkingSpotForCleaningHandler(
         var weeklyParkingSpots = (await weeklyParkingSpotRepository.GetByWeekAsync(week)).ToList();
         parkingReservationService.ReserveParkingForCleaning(weeklyParkingSpots, command.Date);
 
-        foreach (var parkingSpot in weeklyParkingSpots)
-        {
-            await weeklyParkingSpotRepository.UpdateAsync(parkingSpot);
-        }
+        var tasks = weeklyParkingSpots.Select(x => weeklyParkingSpotRepository.UpdateAsync(x));
+        await Task.WhenAll(tasks);
     }
 }

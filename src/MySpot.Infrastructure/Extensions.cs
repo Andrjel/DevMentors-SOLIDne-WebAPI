@@ -5,6 +5,7 @@ using MySpot.App.Abstractions.Queries;
 using MySpot.Core.Abstractions;
 using MySpot.Infrastructure.DAL;
 using MySpot.Infrastructure.Exceptions;
+using MySpot.Infrastructure.Logging;
 using MySpot.Infrastructure.Services;
 
 namespace MySpot.Infrastructure;
@@ -18,9 +19,12 @@ public static class Extensions
     {
         var section = configuration.GetSection("APP");
         services.Configure<AppOptions>(section);
-        services.AddPostgres(configuration);
         services.AddSingleton<IClock, Clock>();
         services.AddSingleton<ExceptionMiddleware>();
+
+        services.AddPostgres(configuration);
+        services.AddCustomLogging();
+
         var infrastructureAssembly = typeof(AppOptions).Assembly;
         services.Scan(s =>
             s.FromAssemblies(infrastructureAssembly)

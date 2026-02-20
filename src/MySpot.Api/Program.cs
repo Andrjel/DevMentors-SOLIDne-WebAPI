@@ -2,6 +2,7 @@ using MySpot.Api.Endpoints;
 using MySpot.App;
 using MySpot.Core;
 using MySpot.Infrastructure;
+using MySpot.Infrastructure.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCore();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.UseSerilog();
 
 var app = builder.Build();
 
