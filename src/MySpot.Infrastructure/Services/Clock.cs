@@ -4,5 +4,5 @@ namespace MySpot.Infrastructure.Services;
 
 internal sealed class Clock : IClock
 {
-    public DateTimeOffset Current => DateTimeOffset.UtcNow;
+    public DateTimeOffset Current => DateTimeOffset.Now;
 }

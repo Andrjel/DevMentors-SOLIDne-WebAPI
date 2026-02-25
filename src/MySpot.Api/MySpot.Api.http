@@ -56,13 +56,36 @@ GET {{MySpot_HostAddress}}/users/a17b6bfb-7dbf-405c-8aea-d0541b348235
 
 ###
 
+GET {{MySpot_HostAddress}}/users/jwt
+
+### Logowanie
+POST {{MySpot_HostAddress}}/users/signin
+Content-Type: application/json
+
+{
+  "email": "user2@myspot.io",
+  "password": "secretPassword231"
+}
+
+> {%
+    // Wyciągnięcie tokenu z JSON-a i zapisanie jako zmienna globalna
+    client.global.set("accessToken", response.body.accessToken);
+%}
+
+###
+GET {{MySpot_HostAddress}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+
 POST {{MySpot_HostAddress}}/users/signup
 Content-Type: application/json
 
 {
-    "email": "user1@myspot.io",
-    "username": "user1",
-    "password": "secretPassword",
+    "email": "user2@myspot.io",
+    "username": "user2",
+    "password": "secretPassword231",
     "fullName": "John Doe",
     "role": "user"
 }
+
