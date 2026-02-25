@@ -1,13 +1,14 @@
 @reservationId = cffd5bf6-10d4-4d71-8bf7-06705821f873
 @parkingSpotId = 00000000-0000-0000-0000-000000000003
+@parkingSpotsBase = {{MySpot_HostAddress}}/parking-spots
 ###
 
-GET {{MySpot_HostAddress}}
+GET {{parkingSpotsBase}}
 Accept: application/json
 
 ###
 
-POST {{MySpot_HostAddress}}/{{parkingSpotId}}/reservations/vehicle
+POST {{parkingSpotsBase}}/{{parkingSpotId}}/reservations/vehicle
 Content-Type: application/json
 
 {
@@ -20,7 +21,7 @@ Content-Type: application/json
 
 ###
 
-POST {{MySpot_HostAddress}}/reservations/cleaning
+POST {{parkingSpotsBase}}/reservations/cleaning
 Content-Type: application/json
 
 {
@@ -30,7 +31,7 @@ Content-Type: application/json
 
 ###
 
-PUT {{MySpot_HostAddress}}/reservations/{{reservationId}}
+PUT {{parkingSpotsBase}}/reservations/{{reservationId}}
 Content-Type: application/json
 
 {
@@ -39,8 +40,29 @@ Content-Type: application/json
 
 ###
 
-DELETE {{MySpot_HostAddress}}/reservations/{{reservationId}}
+DELETE {{parkingSpotsBase}}/reservations/{{reservationId}}
 
 ###
 
-GET {{MySpot_HostAddress}}
+GET {{parkingSpotsBase}}
+
+###
+
+GET {{MySpot_HostAddress}}/users
+
+###
+
+GET {{MySpot_HostAddress}}/users/a17b6bfb-7dbf-405c-8aea-d0541b348235
+
+###
+
+POST {{MySpot_HostAddress}}/users/signup
+Content-Type: application/json
+
+{
+    "email": "user1@myspot.io",
+    "username": "user1",
+    "password": "secretPassword",
+    "fullName": "John Doe",
+    "role": "user"
+}

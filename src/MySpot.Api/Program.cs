@@ -28,5 +28,6 @@ app.UseInfrastructure();
 app.MapWeatherForecastApi();
 app.MapParkingSpotsV1();
 app.MapHomeV1();
+app.MapUsersApiV1();
 
 app.Run();
