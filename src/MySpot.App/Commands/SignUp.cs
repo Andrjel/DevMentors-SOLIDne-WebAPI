@@ -41,7 +41,7 @@ internal sealed class SignUpHandler : ICommandHandler<SignUp>
         var username = new Username(command.Username);
         var password = new Password(command.Password);
         var fullName = new FullName(command.FullName);
-        var role = string.IsNullOrWhiteSpace(command.Role) ? Role.Employee : Role.Manager;
+        var role = command.Role;
 
         if (await _userRepository.GetByEmailAsync(email) is not null)
             throw new EmailAlreadyInUseException(email);

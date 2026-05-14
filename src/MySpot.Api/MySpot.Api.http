@@ -49,10 +49,13 @@ GET {{parkingSpotsBase}}
 ###
 
 GET {{MySpot_HostAddress}}/users
+Authorization: Bearer {{accessToken}}
+
 
 ###
 
-GET {{MySpot_HostAddress}}/users/a17b6bfb-7dbf-405c-8aea-d0541b348235
+GET {{MySpot_HostAddress}}/users/b6eaac83-adf5-46b5-bbe9-6d83b7cde19a
+Authorization: Bearer {{accessToken}}
 
 ###
 
@@ -63,7 +66,7 @@ POST {{MySpot_HostAddress}}/users/signin
 Content-Type: application/json
 
 {
-  "email": "user2@myspot.io",
+  "email": "admin@myspot.io",
   "password": "secretPassword231"
 }
 
@@ -82,10 +85,10 @@ POST {{MySpot_HostAddress}}/users/signup
 Content-Type: application/json
 
 {
-    "email": "user2@myspot.io",
-    "username": "user2",
+    "email": "admin@myspot.io",
+    "username": "admin",
     "password": "secretPassword231",
-    "fullName": "John Doe",
-    "role": "user"
+    "fullName": "Admin User",
+    "role": "admin"
 }
 

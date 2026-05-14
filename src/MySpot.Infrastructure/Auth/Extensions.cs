@@ -48,6 +48,7 @@ internal static class Extensions
                 .RequireAuthenticatedUser()
                 .Build();
             options.DefaultPolicy = defaultPolicy;
+            options.AddPolicy("is-admin", policy => policy.RequireRole("admin"));
         });
 
         return services;

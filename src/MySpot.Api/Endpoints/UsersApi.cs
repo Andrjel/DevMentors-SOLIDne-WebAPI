@@ -14,8 +14,8 @@ public static class UsersApi
     public static WebApplication MapUsersApiV1(this WebApplication app)
     {
         var group = app.MapGroup("users");
-        group.MapGet("", GetUsers).WithName("GetUsers");
-        group.MapGet("/{id:guid}", GetUser).WithName("GetUser");
+        group.MapGet("", GetUsers).WithName("GetUsers").RequireAuthorization("is-admin");
+        group.MapGet("/{id:guid}", GetUser).WithName("GetUser").RequireAuthorization("is-admin");
         group.MapGet("/me", GetMe).WithName("GetMe").RequireAuthorization();
         group.MapGet("/jwt", GetJwt).WithName("GetJwt");
         group.MapPost("/signup", PostSignUpUser).WithName("PostSignUpUser");
@@ -32,9 +32,10 @@ public static class UsersApi
         return TypedResults.Ok(result);
     }
 
-    private static async Task<Ok<UserDto>> GetUser(
+    private static async Task<Results<Ok<UserDto>, ForbidHttpResult>> GetUser(
         [FromRoute] Guid id,
-        [FromServices] IQueryHandler<GetUser, UserDto> commandHandler
+        [FromServices] IQueryHandler<GetUser, UserDto> commandHandler,
+        HttpContext httpContext
     )
     {
         var result = await commandHandler.HandleAsync(new GetUser { UserId = id });
