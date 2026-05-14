@@ -37,12 +37,25 @@ public static class Extensions
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
         );
+        services.AddSwaggerGen(options =>
+        {
+            options.EnableAnnotations();
+            options.SwaggerDoc("v1", new() { Title = "MySpot API", Version = "v1" });
+        });
+        services.AddEndpointsApiExplorer();
         return services;
     }
 
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
+        app.UseSwagger();
+        app.UseReDoc(options =>
+        {
+            options.DocumentTitle = "MySpot API Documentation";
+            options.RoutePrefix = "docs";
+            options.SpecUrl("/swagger/v1/swagger.json");
+        });
         app.UseAuthentication();
         app.UseAuthorization();
         return app;

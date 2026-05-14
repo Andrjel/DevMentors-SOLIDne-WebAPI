@@ -6,6 +6,7 @@ using MySpot.App.Commands;
 using MySpot.App.DTO;
 using MySpot.App.Queries;
 using MySpot.App.Security;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MySpot.Api.Endpoints;
 
@@ -32,6 +33,16 @@ public static class UsersApi
         return TypedResults.Ok(result);
     }
 
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(
+        Summary = "Get user by id",
+        Description = "Returns a user with the specified id. Requires admin role.",
+        OperationId = "GetUser",
+        Tags = new[] { "Users" }
+    )]
     private static async Task<Results<Ok<UserDto>, ForbidHttpResult>> GetUser(
         [FromRoute] Guid id,
         [FromServices] IQueryHandler<GetUser, UserDto> commandHandler,
