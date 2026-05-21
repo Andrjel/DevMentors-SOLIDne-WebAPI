@@ -9,6 +9,7 @@
     <Project Path="src/MySpot.Infrastructure/MySpot.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/MySpot.Tests.Integration/MySpot.Tests.Integration.csproj" />
     <Project Path="tests/MySpot.Tests/MySpot.Tests.csproj" />
   </Folder>
 </Solution>

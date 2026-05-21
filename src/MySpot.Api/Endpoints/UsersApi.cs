@@ -73,13 +73,14 @@ public static class UsersApi
         return TypedResults.Ok(jwt);
     }
 
-    private static async Task<NoContent> PostSignUpUser(
+    private static async Task<CreatedAtRoute> PostSignUpUser(
         [FromBody] SignUp command,
         [FromServices] ICommandHandler<SignUp> commandHandler
     )
     {
-        await commandHandler.HandleAsync(command with { UserId = Guid.NewGuid() });
-        return TypedResults.NoContent();
+        var newUserId = Guid.NewGuid();
+        await commandHandler.HandleAsync(command with { UserId = newUserId });
+        return TypedResults.CreatedAtRoute(nameof(GetUser), new { id = newUserId });
     }
 
     private static async Task<Ok<JwtDto>> PostSignInUser(

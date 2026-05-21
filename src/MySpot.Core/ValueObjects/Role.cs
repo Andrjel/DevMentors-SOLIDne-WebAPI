@@ -7,6 +7,7 @@ public sealed record Role
     public const string Employee = nameof(Employee);
     public const string Manager = nameof(Manager);
     public const string Boss = nameof(Boss);
+    public const string User = nameof(User);
 
     private Role(string value) => Value = value;
 

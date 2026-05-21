@@ -23,4 +23,8 @@
       <Link>.dockerignore</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MySpot.Tests.Integration" />
+  </ItemGroup>
 </Project>

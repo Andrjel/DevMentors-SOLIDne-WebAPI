@@ -37,13 +37,4 @@ internal static class Extensions
         services.AddHostedService<DatabaseInitializer>();
         return services;
     }
-
-    public static T GetOptions<T>(this IConfiguration configuration, string sectionName)
-        where T : class, new()
-    {
-        var section = configuration.GetSection(sectionName);
-        var options = new T();
-        section.Bind(options);
-        return options;
-    }
 }
